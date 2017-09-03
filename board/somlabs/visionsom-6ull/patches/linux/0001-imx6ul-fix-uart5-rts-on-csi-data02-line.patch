@@ -1,0 +1,21 @@
+From 51281f29b03e8f2a0643a7971099970cbe3695a3 Mon Sep 17 00:00:00 2001
+From: Arkadiusz Karas <arkkar13@gmail.com>
+Date: Mon, 28 Aug 2017 21:06:27 +0200
+Subject: Fix iMX6UL/ULL UART5 RTS input selection value for CSI_DATA02 line.
+
+Reference manual states that this should be value '5' but value '7' has
+to be used for proper operation. This is either error in RM or silicon.
+
+diff --git a/arch/arm/boot/dts/imx6ul-pinfunc.h b/arch/arm/boot/dts/imx6ul-pinfunc.h
+index 1d43f51..a1d8457 100644
+--- a/arch/arm/boot/dts/imx6ul-pinfunc.h
++++ b/arch/arm/boot/dts/imx6ul-pinfunc.h
+@@ -914,7 +914,7 @@
+ #define MX6UL_PAD_CSI_DATA02__EIM_AD02                            0x01EC 0x0478 0x0000 0x4 0x0
+ #define MX6UL_PAD_CSI_DATA02__GPIO4_IO23                          0x01EC 0x0478 0x0000 0x5 0x0
+ #define MX6UL_PAD_CSI_DATA02__SAI1_RX_SYNC                        0x01EC 0x0478 0x0000 0x6 0x0
+-#define MX6UL_PAD_CSI_DATA02__UART5_DCE_RTS                       0x01EC 0x0478 0x0640 0x8 0x5
++#define MX6UL_PAD_CSI_DATA02__UART5_DCE_RTS                       0x01EC 0x0478 0x0640 0x8 0x7
+ #define MX6UL_PAD_CSI_DATA02__UART5_DTE_CTS                       0x01EC 0x0478 0x0000 0x8 0x0
+ #define MX6UL_PAD_CSI_DATA03__CSI_DATA05                          0x01F0 0x047C 0x04CC 0x0 0x0
+ #define MX6UL_PAD_CSI_DATA03__USDHC2_DATA3                        0x01F0 0x047C 0x0688 0x1 0x0
