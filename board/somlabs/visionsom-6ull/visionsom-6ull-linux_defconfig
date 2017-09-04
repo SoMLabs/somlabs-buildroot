@@ -161,8 +161,8 @@ CONFIG_USB_NET_CDC_EEM=m
 CONFIG_BCMDHD=y
 CONFIG_BCMDHD_SDIO=y
 CONFIG_BCM4339=y
-CONFIG_BCMDHD_FW_PATH="/lib/firmware/bcm/murata_1dx/fw_bcmdhd.bin"
-CONFIG_BCMDHD_NVRAM_PATH="/lib/firmware/bcm/murata_1dx/bcmdhd.1DX.SDIO.cal"
+CONFIG_BCMDHD_FW_PATH="/lib/firmware/1DX_BCM4343W/fw_bcmdhd.bin"
+CONFIG_BCMDHD_NVRAM_PATH="/lib/firmware/1DX_BCM4343W/bcmdhd.1DX.SDIO.cal"
 # CONFIG_RTL_CARDS is not set
 # CONFIG_INPUT_MOUSEDEV_PSAUX is not set
 CONFIG_INPUT_EVDEV=y
