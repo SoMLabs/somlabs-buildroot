@@ -2,15 +2,26 @@ config BR2_PACKAGE_FIRMWARE_IMX_BCMDHD
 	bool "firmware-imx-bcmdhd"
 	depends on BR2_arm # Only relevant for i.MX
 	help
-	  Firmware blobs and binary utils for the Murata WiFi/Bluetooth modules.
+      Firmware blobs and binary utils for the Murata WiFi/Bluetooth modules.
 
-	  It contains blobs for WiFi and Bluetooth and binaries for various Linux utilities.
+      These subdirectories provide firmware for Broadcom Bluetooth and Wifi support for i.MX Linux Releases.
+      A more complete installation for Broadcom Bluetooth and Wifi enablement is available on
+      nxp.com/imx6tools in the Broadcom Firmware package under Linux.
+      This library is provided by Freescale as-is and doesn't have an upstream.
 
-	  WARNING! This package can not be downloaded automatically by buildroot!
-	  WARNING! Please go to this link:
-	  WARNING! https://www.nxp.com/webapp/sps/download/license.jsp?colCode=BCMDHD-L4.1.15_1.2.0
-	  WARNING! and download package, then copy it into buildroot 'dl' directory.
-	  WARNING! You need NXP account to download package frome above link!
+if BR2_PACKAGE_FIRMWARE_IMX_BCMDHD
+comment "Select Murata WiFi/BT module type"
 
-	  This library is provided by Freescale as-is and doesn't have
-	  an upstream.
+config BR2_PACKAGE_FIRMWARE_IMX_BCMDHD_1BW
+	bool "1BW"
+
+config BR2_PACKAGE_FIRMWARE_IMX_BCMDHD_1DX
+	bool "1DX"
+
+config BR2_PACKAGE_FIRMWARE_IMX_BCMDHD_SN8000
+	bool "SN8000"
+
+config BR2_PACKAGE_FIRMWARE_IMX_BCMDHD_ZP
+	bool "ZP"
+
+endif
