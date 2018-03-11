@@ -1,0 +1,31 @@
+BR2_arm=y
+BR2_cortex_a7=y
+BR2_CCACHE=y
+BR2_GLOBAL_PATCH_DIR="board/somlabs/visionsom-6ull/patches"
+BR2_TOOLCHAIN_EXTERNAL=y
+BR2_ROOTFS_DEVICE_CREATION_DYNAMIC_MDEV=y
+BR2_TARGET_GENERIC_GETTY_PORT="ttymxc0"
+BR2_ROOTFS_OVERLAY="board/somlabs/visionsom-6ull/nandflash-rootfs-overlay"
+BR2_LINUX_KERNEL=y
+BR2_LINUX_KERNEL_CUSTOM_GIT=y
+BR2_LINUX_KERNEL_CUSTOM_REPO_URL="git://git.freescale.com/imx/linux-imx.git"
+BR2_LINUX_KERNEL_CUSTOM_REPO_VERSION="rel_imx_4.9.x_1.0.0_ga"
+BR2_LINUX_KERNEL_USE_CUSTOM_CONFIG=y
+BR2_LINUX_KERNEL_CUSTOM_CONFIG_FILE="board/somlabs/visionsom-6ull/visionsom-6ull-linux_nand_flasher_defconfig"
+BR2_LINUX_KERNEL_DTS_SUPPORT=y
+BR2_LINUX_KERNEL_USE_CUSTOM_DTS=y
+BR2_LINUX_KERNEL_CUSTOM_DTS_PATH="board/somlabs/visionsom-6ull/somlabs-visionsom-6ul.dts board/somlabs/visionsom-6ull/somlabs-visionsom-6ul-emmc.dts board/somlabs/visionsom-6ull/somlabs-visionsom-6ull.dts board/somlabs/visionsom-6ull/somlabs-visionsom-6ull-emmc.dts board/somlabs/visionsom-6ull/somlabs-visionsom-6ull-nand.dts board/somlabs/visionsom-6ull/somlabs-visionsom-6ul-nand.dts"
+BR2_PACKAGE_MTD=y
+# BR2_PACKAGE_MTD_FLASHCP is not set
+# BR2_PACKAGE_MTD_FLASH_LOCK is not set
+# BR2_PACKAGE_MTD_FLASH_UNLOCK is not set
+# BR2_PACKAGE_MTD_MTD_DEBUG is not set
+BR2_PACKAGE_MTD_MTDPART=y
+# BR2_PACKAGE_MTD_NANDDUMP is not set
+# BR2_PACKAGE_MTD_NANDTEST is not set
+# BR2_PACKAGE_MTD_NANDWRITE is not set
+BR2_PACKAGE_FREESCALE_IMX=y
+BR2_PACKAGE_IMX_KOBS=y
+BR2_TARGET_ROOTFS_CPIO_XZ=y
+BR2_TARGET_ROOTFS_INITRAMFS=y
+# BR2_TARGET_ROOTFS_TAR is not set
