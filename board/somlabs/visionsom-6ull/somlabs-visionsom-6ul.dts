@@ -212,6 +212,10 @@
 				MX6UL_PAD_JTAG_TDI__GPIO1_IO13		0x17099	/* LED 2 */
 				MX6UL_PAD_JTAG_TDO__GPIO1_IO12		0x17099	/* LED 3 */
 
+				/* MC60E module pwr control GPIOs */
+				MX6UL_PAD_ENET2_TX_DATA0__GPIO2_IO11	0x17059	/* modem ONKEY signal */
+				MX6UL_PAD_ENET2_RX_DATA1__GPIO2_IO09	0x17059	/* Dc/DC enable signal */
+
 				/* MX6UL_PAD_ENET2_TX_DATA1__USB_OTG2_PWR	0x17099
 				MX6UL_PAD_ENET2_RX_DATA0__USB_OTG1_PWR	0x17099
 				*/
@@ -320,6 +324,15 @@
 			fsl,pins = <
 				MX6UL_PAD_UART1_TX_DATA__UART1_DCE_TX 0x1b0b1
 				MX6UL_PAD_UART1_RX_DATA__UART1_DCE_RX 0x1b0b1
+			>;
+		};
+
+		pinctrl_uart4: uart4grp {
+			fsl,pins = <
+				MX6UL_PAD_UART4_TX_DATA__UART4_DCE_TX	0x1b0b1
+				MX6UL_PAD_UART4_RX_DATA__UART4_DCE_RX	0x1b0b1
+				//MX6UL_PAD_CSI_DATA02__UART5_DCE_RTS	0x1b0b1
+				//MX6UL_PAD_CSI_DATA03__UART5_DCE_CTS	0x1b0b1
 			>;
 		};
 
@@ -480,7 +493,6 @@
 			>;
 		};
 
-
 	};
 };
 
@@ -565,6 +577,13 @@
 	status = "okay";
 };
 
+&uart4 {
+	pinctrl-names = "default";
+	pinctrl-0 = <&pinctrl_uart4>;
+	//uart-has-rtscts;
+	status = "okay";
+};
+
 &uart5 {
 	pinctrl-names = "default";
 	pinctrl-0 = <&pinctrl_uart5>;
@@ -625,4 +644,3 @@
 	status = "disabled";
 	nand-on-flash-bbt;
 };
-
