@@ -35,12 +35,19 @@ endif
 
 QT5BASE_CONFIGURE_OPTS += $(call qstrip,$(BR2_PACKAGE_QT5BASE_CUSTOM_CONF_OPTS))
 
-# Uses libgbm from mesa3d
-ifeq ($(BR2_PACKAGE_MESA3D_OPENGL_EGL),y)
-QT5BASE_CONFIGURE_OPTS += -kms -gbm
-QT5BASE_DEPENDENCIES += mesa3d
+ifeq ($(BR2_PACKAGE_LIBDRM),y)
+QT5BASE_CONFIGURE_OPTS += -kms
+QT5BASE_DEPENDENCIES += libdrm
 else
 QT5BASE_CONFIGURE_OPTS += -no-kms
+endif
+
+# Uses libgbm from mesa3d
+ifeq ($(BR2_PACKAGE_MESA3D_OPENGL_EGL),y)
+QT5BASE_CONFIGURE_OPTS += -gbm
+QT5BASE_DEPENDENCIES += mesa3d
+else
+QT5BASE_CONFIGURE_OPTS += -no-gbm
 endif
 
 ifeq ($(BR2_ENABLE_DEBUG),y)
@@ -105,6 +112,22 @@ QT5BASE_DEPENDENCIES += freetype
 else
 QT5BASE_CONFIGURE_OPTS += -no-gui -no-freetype
 endif
+
+ifeq ($(BR2_PACKAGE_QT5BASE_HARFBUZZ),y)
+ifeq ($(BR2_TOOLCHAIN_HAS_SYNC_4),y)
+# system harfbuzz in case __sync for 4 bytes is supported
+QT5BASE_CONFIGURE_OPTS += -system-harfbuzz
+QT5BASE_DEPENDENCIES += harfbuzz
+else
+# qt harfbuzz otherwise (using QAtomic instead)
+QT5BASE_CONFIGURE_OPTS += -qt-harfbuzz
+QT5BASE_LICENSE := $(QT5BASE_LICENSE), MIT (harfbuzz)
+QT5BASE_LICENSE_FILES += src/3rdparty/harfbuzz-ng/COPYING
+endif
+else
+QT5BASE_CONFIGURE_OPTS += -no-harfbuzz
+endif
+
 QT5BASE_CONFIGURE_OPTS += $(if $(BR2_PACKAGE_QT5BASE_WIDGETS),-widgets,-no-widgets)
 # We have to use --enable-linuxfb, otherwise Qt thinks that -linuxfb
 # is to add a link against the "inuxfb" library.
@@ -224,6 +247,11 @@ QT5BASE_INSTALL_LIBS_$(BR2_PACKAGE_QT5BASE_PRINTSUPPORT) += Qt5PrintSupport
 
 QT5BASE_INSTALL_LIBS_$(BR2_PACKAGE_QT5BASE_DBUS) += Qt5DBus
 
+ifeq ($(BR2_PACKAGE_QT5_VERSION_LATEST)$(BR2_PACKAGE_IMX_GPU_VIV),yy)
+# use vivante backend
+QT5BASE_EGLFS_DEVICE = EGLFS_DEVICE_INTEGRATION = eglfs_viv
+endif
+
 ifneq ($(QT5BASE_CONFIG_FILE),)
 define QT5BASE_CONFIGURE_CONFIG_FILE
 	cp $(QT5BASE_CONFIG_FILE) $(@D)/src/corelib/global/qconfig-buildroot.h
@@ -239,7 +267,9 @@ endef
 endif
 
 define QT5BASE_CONFIGURE_CMDS
-	$(INSTALL) -m 0644 -D $(QT5BASE_PKGDIR)/qmake.conf \
+	mkdir -p $(@D)/mkspecs/devices/linux-buildroot-g++/
+	sed 's/@EGLFS_DEVICE@/$(QT5BASE_EGLFS_DEVICE)/g' \
+		$(QT5BASE_PKGDIR)/qmake.conf.in > \
 		$(@D)/mkspecs/devices/linux-buildroot-g++/qmake.conf
 	$(INSTALL) -m 0644 -D $(QT5BASE_PKGDIR)/qplatformdefs.h \
 		$(@D)/mkspecs/devices/linux-buildroot-g++/qplatformdefs.h

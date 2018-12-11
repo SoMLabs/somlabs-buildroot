@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-POCO_VERSION = poco-1.7.2-release
+POCO_VERSION = poco-1.8.1-release
 POCO_SITE = $(call github,pocoproject,poco,$(POCO_VERSION))
 POCO_LICENSE = BSL-1.0
 POCO_LICENSE_FILES = LICENSE
@@ -28,12 +28,17 @@ POCO_OMIT = Data/ODBC PageCompiler \
 	$(if $(BR2_PACKAGE_POCO_DATA_MYSQL),,Data/MySQL) \
 	$(if $(BR2_PACKAGE_POCO_DATA_SQLITE),,Data/SQLite)
 
-ifeq ($(LIBC),uclibc)
+ifeq ($(BR2_TOOLCHAIN_USES_UCLIBC),y)
 POCO_CONF_OPTS += --no-fpenvironment --no-wstring
 endif
 
 # architectures missing some FE_* in their fenv.h
 ifeq ($(BR2_sh4a)$(BR2_nios2),y)
+POCO_CONF_OPTS += --no-fpenvironment
+endif
+
+# disable fpenvironment for soft floating point configuration
+ifeq ($(BR2_SOFT_FLOAT),y)
 POCO_CONF_OPTS += --no-fpenvironment
 endif
 

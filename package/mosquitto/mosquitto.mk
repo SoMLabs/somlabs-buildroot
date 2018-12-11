@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-MOSQUITTO_VERSION = 1.4.14
+MOSQUITTO_VERSION = 1.5.4
 MOSQUITTO_SITE = https://mosquitto.org/files/source
 MOSQUITTO_LICENSE = EPL-1.0 or EDLv1.0
 MOSQUITTO_LICENSE_FILES = LICENSE.txt epl-v10 edl-v10
@@ -16,6 +16,13 @@ MOSQUITTO_MAKE_OPTS = \
 	prefix=/usr \
 	WITH_WRAP=no \
 	WITH_DOCS=no
+
+# uses malloc_usable_size which was only added in uClibc-ng 1.0.29
+ifeq ($(BR2_TOOLCHAIN_USES_UCLIBC),y)
+MOSQUITTO_MAKE_OPTS += WITH_MEMORY_TRACKING=no
+else
+MOSQUITTO_MAKE_OPTS += WITH_MEMORY_TRACKING=yes
+endif
 
 # adns uses getaddrinfo_a
 ifeq ($(BR2_TOOLCHAIN_USES_GLIBC),y)
@@ -30,8 +37,8 @@ else
 MOSQUITTO_MAKE_OPTS += WITH_THREADING=no
 endif
 
-ifeq ($(BR2_PACKAGE_OPENSSL),y)
-MOSQUITTO_DEPENDENCIES += openssl
+ifeq ($(BR2_PACKAGE_LIBOPENSSL),y)
+MOSQUITTO_DEPENDENCIES += libopenssl
 MOSQUITTO_MAKE_OPTS += WITH_TLS=yes
 else
 MOSQUITTO_MAKE_OPTS += WITH_TLS=no

@@ -5,13 +5,15 @@
 ################################################################################
 
 LIGHTTPD_VERSION_MAJOR = 1.4
-LIGHTTPD_VERSION = $(LIGHTTPD_VERSION_MAJOR).45
+LIGHTTPD_VERSION = $(LIGHTTPD_VERSION_MAJOR).51
 LIGHTTPD_SOURCE = lighttpd-$(LIGHTTPD_VERSION).tar.xz
 LIGHTTPD_SITE = http://download.lighttpd.net/lighttpd/releases-$(LIGHTTPD_VERSION_MAJOR).x
 LIGHTTPD_LICENSE = BSD-3-Clause
 LIGHTTPD_LICENSE_FILES = COPYING
 LIGHTTPD_DEPENDENCIES = host-pkgconf
 LIGHTTPD_CONF_OPTS = \
+	--without-pam \
+	--without-wolfssl \
 	--libdir=/usr/lib/lighttpd \
 	--libexecdir=/usr/lib
 
@@ -96,6 +98,9 @@ define LIGHTTPD_INSTALL_INIT_SYSTEMD
 
 	ln -fs ../../../../usr/lib/systemd/system/lighttpd.service \
 		$(TARGET_DIR)/etc/systemd/system/multi-user.target.wants/lighttpd.service
+
+	$(INSTALL) -D -m 644 package/lighttpd/lighttpd_tmpfiles.conf \
+		$(TARGET_DIR)/usr/lib/tmpfiles.d/lighttpd.conf
 endef
 
 $(eval $(autotools-package))
